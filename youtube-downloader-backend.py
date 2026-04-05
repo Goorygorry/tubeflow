@@ -25,32 +25,36 @@ else:
 
 os.makedirs(DOWNLOADS_FOLDER, exist_ok=True)
 
-# Debug: Print all env vars (without sensitive values)
-print("=== Environment Variables ===", flush=True)
+import sys
+
+# Debug: Print all env vars
+print("=== Environment Variables ===", file=sys.stderr, flush=True)
 for key, value in os.environ.items():
     if "cookie" in key.lower() or "youtube" in key.lower():
         print(
             f"{key}: {value[:50]}..." if len(value) > 50 else f"{key}: {value}",
+            file=sys.stderr,
             flush=True,
         )
-print("================================", flush=True)
+print("================================", file=sys.stderr, flush=True)
 
 # YouTube cookies - read from environment variable and write to file
 YOUTUBE_COOKIES = os.environ.get("YOUTUBE_COOKIES", "")
-print(f"YOUTUBE_COOKIES found: {len(YOUTUBE_COOKIES) > 0}", flush=True)
+print(f"YOUTUBE_COOKIES found: {len(YOUTUBE_COOKIES) > 0}", file=sys.stderr, flush=True)
 COOKIES_FILE = os.path.join(DOWNLOADS_FOLDER, "cookies.txt")
 if YOUTUBE_COOKIES:
     try:
         with open(COOKIES_FILE, "w") as f:
             f.write(YOUTUBE_COOKIES)
-        print(f"✓ Cookies file created at {COOKIES_FILE}")
-        print(f"  File exists: {os.path.exists(COOKIES_FILE)}")
+        print(f"✓ Cookies file created at {COOKIES_FILE}", file=sys.stderr, flush=True)
     except Exception as e:
-        print(f"✗ Error creating cookies file: {e}")
+        print(f"✗ Error creating cookies file: {e}", file=sys.stderr, flush=True)
 else:
-    print(f"✗ No YOUTUBE_COOKIES environment variable found")
+    print(f"✗ No YOUTUBE_COOKIES found", file=sys.stderr, flush=True)
     print(
-        f"  Available env vars with 'cookie': {[k for k in os.environ if 'cookie' in k.lower()]}"
+        f"All env keys with 'youtube': {[k for k in os.environ if 'youtube' in k.lower()]}",
+        file=sys.stderr,
+        flush=True,
     )
 
 HTML_FILE = os.path.join(os.path.dirname(__file__), "youtube-downloader.html")
