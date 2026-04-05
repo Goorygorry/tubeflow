@@ -29,9 +29,15 @@ os.makedirs(DOWNLOADS_FOLDER, exist_ok=True)
 YOUTUBE_COOKIES = os.environ.get("YOUTUBE_COOKIES", "")
 COOKIES_FILE = os.path.join(DOWNLOADS_FOLDER, "cookies.txt")
 if YOUTUBE_COOKIES:
-    with open(COOKIES_FILE, "w") as f:
-        f.write(YOUTUBE_COOKIES)
-    print(f"Cookies file created at {COOKIES_FILE}")
+    try:
+        with open(COOKIES_FILE, "w") as f:
+            f.write(YOUTUBE_COOKIES)
+        print(f"✓ Cookies file created at {COOKIES_FILE}")
+        print(f"  File exists: {os.path.exists(COOKIES_FILE)}")
+    except Exception as e:
+        print(f"✗ Error creating cookies file: {e}")
+else:
+    print(f"✗ No YOUTUBE_COOKIES environment variable found")
 
 HTML_FILE = os.path.join(os.path.dirname(__file__), "youtube-downloader.html")
 
