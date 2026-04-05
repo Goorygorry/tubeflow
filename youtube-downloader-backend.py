@@ -26,14 +26,18 @@ else:
 os.makedirs(DOWNLOADS_FOLDER, exist_ok=True)
 
 # Debug: Print all env vars (without sensitive values)
-print("=== Environment Variables ===")
+print("=== Environment Variables ===", flush=True)
 for key, value in os.environ.items():
     if "cookie" in key.lower() or "youtube" in key.lower():
-        print(f"{key}: {value[:50]}..." if len(value) > 50 else f"{key}: {value}")
-print("================================")
+        print(
+            f"{key}: {value[:50]}..." if len(value) > 50 else f"{key}: {value}",
+            flush=True,
+        )
+print("================================", flush=True)
 
 # YouTube cookies - read from environment variable and write to file
 YOUTUBE_COOKIES = os.environ.get("YOUTUBE_COOKIES", "")
+print(f"YOUTUBE_COOKIES found: {len(YOUTUBE_COOKIES) > 0}", flush=True)
 COOKIES_FILE = os.path.join(DOWNLOADS_FOLDER, "cookies.txt")
 if YOUTUBE_COOKIES:
     try:
